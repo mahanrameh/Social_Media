@@ -1,6 +1,7 @@
 const { compareSync } = require("bcryptjs");
 const { response, render } = require("../../app");
 const userModel = require("./../../model/userModel");
+const refreshTokenModel = require("./../../model/refreshToken");
 const jwt = require("jsonwebtoken");
 const {successResponse,errorResponse} = require("./../../utils/responses");
 const {registerValidationSchema} = require("./auth.validator");
@@ -36,7 +37,6 @@ exports.register = async (req, res, next) => {
         let user = new userModel({ email, username, name, password });
         user = await user.save();
 
-        req.flash('success', 'user created successfully');
 
         const accessToken = jwt.sign(
             {userID: user._id},
@@ -44,9 +44,12 @@ exports.register = async (req, res, next) => {
             {expiresIn: '30day'}  // because trainig purposes
         );
 
-        
+        const refreshToken = await refreshTokenModel.createToken(user)
 
         res.cookie('token', accessToken, {maxAge: 900000, httpOnly: true});
+        res.cookie('refresh-token', refreshToken, {maxAge: 900000, httpOnly: true});
+
+        req.flash('success', 'user created successfully');
 
         return res.redirect('/auth/register');
     
