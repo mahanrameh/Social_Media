@@ -2,7 +2,9 @@ const express = require("express");
 const path = require("path");
 const flash = require("express-flash");
 const session = require("express-session");
+const cookieParser = require("cookie-parser");
 const authRouter = require("./modules/auth/auth.route");
+const postRouter = require("./modules/post/post.route");
 const { setHeaders } = require("./middlewares/headers");
 const { errorHandler } = require("./middlewares/errorHandler");
 
@@ -11,6 +13,9 @@ const app = express();
 //* bodyParser
 app.use(express.urlencoded({limit:'50mb', extended: true}));
 app.use(express.json({limit:'50mb'}));
+
+//* CookieParser
+app.use(cookieParser());
 
 //* Cors Policy
 app.use(setHeaders);
@@ -41,6 +46,7 @@ app.get('/', (req, res) => {
     return res.render('index');
 });
 app.use('/auth', authRouter);
+app.use('/post', postRouter);
 
 //* Error Handler
 app.use((req, res) => {
