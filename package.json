@@ -1,0 +1,29 @@
+{
+  "name": "new-folder",
+  "version": "1.0.0",
+  "main": "./src/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "mahan",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.18.1",
+    "jsonwebtoken": "^9.0.2",
+    "moment": "^2.30.1",
+    "mongoose": "^8.13.1",
+    "multer": "^1.4.5-lts.2",
+    "nodemon": "^3.1.9",
+    "swagger-ui-express": "^5.0.1",
+    "sweetalert": "^2.1.2",
+    "uuid": "^11.1.0",
+    "yup": "^1.6.1"
+  }
+}
