@@ -5,6 +5,7 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const authRouter = require("./modules/auth/auth.route");
 const postRouter = require("./modules/post/post.route");
+const pageRouter = require("./modules/page/page.route");
 const { setHeaders } = require("./middlewares/headers");
 const { errorHandler } = require("./middlewares/errorHandler");
 
@@ -47,6 +48,7 @@ app.get('/', (req, res) => {
 });
 app.use('/auth', authRouter);
 app.use('/post', postRouter);
+app.use('/page', pageRouter);
 
 //* Error Handler
 app.use((req, res) => {

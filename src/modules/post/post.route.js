@@ -7,7 +7,7 @@ const {multerStorage} = require("./../../middlewares/uploaderConfigs");
 const router = express.Router();
 const upload = multerStorage(
     'public/images/post',
-    /jpeg|jpg|png|webp|mp4|mkv/
+    /image\/jpeg|image\/jpg|image\/png|image\/webp|video\/mp4|video\/mkv/
 );
 
 

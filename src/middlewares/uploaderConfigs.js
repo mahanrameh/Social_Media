@@ -1,11 +1,13 @@
 const multer = require("multer");
 const fs = require("fs");
-const paths = require("path");
+const path = require("path");
 
 
-exports.multerStorage = (destination, allowedTypes=/jpeg|jpg|png|webp/) => {
+const types =  /image\/jpeg|image\/jpg|image\/png|image\/webp|video\/mp4|video\/mkv/;
+
+exports.multerStorage = (destination, allowedTypes= types) => {
     //* creating destination directory
-    if (fs.existsSync(destination)) {
+    if (!fs.existsSync(destination)) {
         fs.mkdirSync(destination);
     }
 
@@ -23,20 +25,18 @@ exports.multerStorage = (destination, allowedTypes=/jpeg|jpg|png|webp/) => {
 
     });
 
-    const fileFormat = function (req, file, cb) {
+    const fileFilter = function (req, file, cb) {
         //* allow extension
-        if (allowedTypes.test(file.mimtypes)) {
+        if (allowedTypes.test(file.mimetype)) {
             cb(null, true);
         } else {
             cb(new Error('file type not allowed'));
         }
     }
 
-    const upload = multer({
+    return multer({  
         storage,
-        limits: {
-            fileSize: 512000000
-        },
-        fileFilter: fileFormat
+        limits: { fileSize: 512000000 },
+        fileFilter
     });
 };
