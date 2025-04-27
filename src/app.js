@@ -6,6 +6,8 @@ const cookieParser = require("cookie-parser");
 const authRouter = require("./modules/auth/auth.route");
 const postRouter = require("./modules/post/post.route");
 const pageRouter = require("./modules/page/page.route");
+const userRouter = require("./modules/user/user.route");
+const homeRouter = require("./modules/home/home.route");
 const { setHeaders } = require("./middlewares/headers");
 const { errorHandler } = require("./middlewares/errorHandler");
 
@@ -43,12 +45,11 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 //* Routes
-app.get('/', (req, res) => {
-    return res.render('index');
-});
+app.use('/', homeRouter);
 app.use('/auth', authRouter);
 app.use('/post', postRouter);
 app.use('/page', pageRouter);
+app.use('/user', userRouter);
 
 //* Error Handler
 app.use((req, res) => {

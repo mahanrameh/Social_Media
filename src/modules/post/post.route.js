@@ -17,6 +17,31 @@ router
     .post(authWares, upload.single('media'), postController.createPost);
 
 
+router
+    .route('/like')
+    .post(authWares, postController.like);
+
+
+router
+    .route('/dislike')
+    .post(authWares, postController.disLike);
+
+
+router
+    .route('/save')
+    .post(authWares, postController.save);
+
+
+router
+    .route('/unsave')
+    .post(authWares, postController.unSave);
+
+
+router
+    .route('/allsave')
+    .get(authWares, postController.showSaveView);
+
+
 
 
 
