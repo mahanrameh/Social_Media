@@ -34,3 +34,21 @@ exports.loginValidationSchema = yup.object({
         .max(20, 'Must be maximum 20 character')
         .required('password is required!'),
 });
+
+exports.forgetPasswordValidationSchema = yup.object({
+    email: yup
+        .string()
+        .email('Please enter a valid email')
+        .required('Email is required!')
+});
+
+exports.resetPasswordValidationSchema = yup.object({
+    token: yup
+        .string()
+        .required('token is required!'),
+    password: yup
+        .string()
+        .min(7, 'Must be minimum 7 character')
+        .max(20, 'Must be maximum 20 character')
+        .required('password is required!'),
+});

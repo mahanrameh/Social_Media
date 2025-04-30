@@ -1,0 +1,117 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Mahan - Social Media (facebook clone)",
+        "description": " The Social Media project running by Node,Express,MongoDB and ... ",
+        "version": "1.0.0"
+    },
+    "components": {
+        "securitySchemes": {
+            "Authorization": {
+                "type": "apiKey",
+                "name": "Authorization",
+                "scheme": "bearer",
+                "in": "header",
+                "description": "User TOKEN from Authorization: **bearer [user_token]**"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "All Routes about User Authentication"
+        },
+        {
+            "name": "Post",
+            "description": "All Routes for manipulating Posts"
+        },
+        {
+            "name": "Page",
+            "description": "All Routes that connect us to Pages"
+        },
+        {
+            "name": "User",
+            "description": "All Routes about Users Info"
+        },
+        {
+            "name": "Home",
+            "description": "Base Home route"
+        }
+    ],
+    "paths": {
+        "/auth/register": {
+            "post": {
+                "tags": ["Auth"],
+                "summary": "Register User",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "example": {
+                                    "email":"mahanrameh7755@gmail.com",
+                                    "username":"mahan09",
+                                    "name": "mahan",
+                                    "password": "1234567"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "successfully registered"
+                    },
+                    "400": {
+                        "description": "fail to register"
+                    }
+                }
+            }
+        },
+        "/page/{pageID}": {
+            "get": {
+                "tags": ["Page"],
+                "summary": "Rendering Pages",
+                "parameters": [
+                    {
+                        "name": "PageID",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success response"
+                    }
+                }
+            }
+        },
+        "/page/{pageID}/follow": {
+            "post": {
+                "tags": ["Page"],
+                "summary":"follow pages",
+                "security": [
+                    {
+                        "Authorization": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "PageID",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success response"
+                    }
+                }
+            }
+        }
+    }
+}
+
+

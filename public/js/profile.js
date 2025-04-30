@@ -397,7 +397,9 @@ const tabsFunc = () => {
                                     </svg>
                                 </button>
                                 </form>
-                                <button class="max-w-max">
+                                 <form action="/post/like" method="post">
+                                <input type="hidden" name="postID" value="661075fdc48808c33cc67f26">
+                                <button type="submit" class="max-w-max">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -405,6 +407,7 @@ const tabsFunc = () => {
                                     </svg>
 
                                 </button>
+                                </form>
                                 <button class="max-w-max">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

@@ -3,6 +3,7 @@ const path = require("path");
 const flash = require("express-flash");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
+const swaggerRouter = require("./modules/apiDoc/swagger.routes");
 const authRouter = require("./modules/auth/auth.route");
 const postRouter = require("./modules/post/post.route");
 const pageRouter = require("./modules/page/page.route");
@@ -46,6 +47,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 //* Routes
 app.use('/', homeRouter);
+app.use('/swagger', swaggerRouter);
 app.use('/auth', authRouter);
 app.use('/post', postRouter);
 app.use('/page', pageRouter);

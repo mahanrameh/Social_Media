@@ -1,7 +1,10 @@
+const mongoose = require("mongoose");
+const path = require("path");
+const fs = require("fs");
 const postModel = require("./../../model/postModel");
 const likeModel = require("./../../model/likeModel");
 const saveModel = require("./../../model/saveModel");
-const mongoose = require("mongoose");
+const commentModel = require("./../../model/commentModel");
 const hasAccessPage =  require("./../../utils/hasAccess");
 const { createPostValidator } = require("./post.validator");
 const {getUserInfo} = require("./../../utils/helper");
@@ -165,13 +168,19 @@ exports.unSave = async (req, res, next) => {
 exports.showSaveView = async (req, res, next) => {
     try {
         const user = req.user;
-        const save = await saveModel.find({ user: user._id })
-        .populate('post')
-        .lean();
         const like = await likeModel.find({ user: user._id })
         .populate('post')
         .lean();
-
+        const save = await saveModel.find({ user: user._id })
+        .populate({
+            path: 'post',
+            populate: {
+                path: 'user',
+                model: 'user'
+            }
+        })
+        .lean();
+        
 
         save.forEach((item) => {
             like.forEach((like) => {
@@ -192,6 +201,83 @@ exports.showSaveView = async (req, res, next) => {
             user: userInfo
         });
 
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.deletePost = async (req, res, next) => {
+    try {
+        const user = req.user;
+        const {postID} = req.params;
+
+        const post = await postModel.findOne({ _id: postID });
+        if (!post || post.user.toString() !==  user._id.toString()) {
+            req.flash('error', 'not able to remove the post');
+
+            return res.redirect('back');
+        }
+
+
+        const mediaPath = path.join(
+            __dirname,
+            '..','..','..','public','images','post',
+            post.media.filename
+        );
+        fs.unlinkSync(mediaPath, (err) => {
+            if (err) {
+                next(err);
+            }
+        });
+
+        await likeModel.deleteMany({ post: postID });
+        await saveModel.deleteMany({ post: postID });
+        // await commentModel.deleteMany({ post: postID });
+
+
+        await postModel.findByIdAndDelete(postID);
+
+
+        req.flash('success', 'post got deleted');
+        return res.redirect('back');
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.addComment = async (req, res, next) => {
+    try {
+        const user = req.user;
+        const { content, postID } = req.body;
+
+        if (!user.isVerified) {
+            req.flash(
+                'error', 
+                'please first login for submiting comment'
+            );
+
+            return res.redirect('back');
+        }
+
+        const post = await postModel.findOne({ _id: postID });
+        if (!post) {
+            //! code
+        }
+
+        //* parentID codes
+
+        const comment = new commentModel({
+            comment,
+            post: postID,
+            user: user._id
+        });
+
+        comment.save();
+
+
+        req.flash('success', 'comment submited successfully');
+
+        return res.redirect('back');
     } catch (err) {
         next(err);
     }

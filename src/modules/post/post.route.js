@@ -42,6 +42,16 @@ router
     .get(authWares, postController.showSaveView);
 
 
+router
+    .route('/:postID/delete')
+    .post(authWares, postController.deletePost);
+
+
+router
+    .route('/newcomment')
+    .post(authWares, postController.addComment);
+
+
 
 
 

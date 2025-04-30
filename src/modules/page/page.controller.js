@@ -4,6 +4,7 @@ const followModel = require("./../../model/followModel");
 const postModel = require("./../../model/postModel");
 const likeModel = require("./../../model/likeModel");
 const saveModel = require("./../../model/saveModel");
+const commentModel = require("./../../model/commentModel");
 
 
 exports.getPage = async (req, res, next) => {
@@ -62,7 +63,11 @@ exports.getPage = async (req, res, next) => {
         const save = await saveModel.find({ user: user._id })
         .populate('user', '_id')
         .populate('post', '_id');
-
+        
+        const comment = await commentModel.find({ user: user._id })
+        .populate('user', '_id')
+        .populate('post', '_id');
+        
         
         post.forEach((post) => {
             if (like.length) {
@@ -92,6 +97,7 @@ exports.getPage = async (req, res, next) => {
             following,
             post,
             ownPage,
+            comment,
             page
         });
     } catch (err) {
